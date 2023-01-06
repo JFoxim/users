@@ -13,9 +13,15 @@ repositories {
 }
 
 dependencies {
-	//implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	runtimeOnly("com.h2database:h2")
+	implementation("org.mapstruct:mapstruct:1.4.2.Final")
+	annotationProcessor("org.mapstruct:mapstruct-processor:1.4.2.Final")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	compileOnly("org.projectlombok:lombok")
+	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testAnnotationProcessor("org.mapstruct:mapstruct-processor:1.4.2.Final")
 }
 
 tasks.withType<Test> {
