@@ -23,7 +23,7 @@ class UsersApplicationTests {
 		User user;
 
 		if (!userService.existsByLogin("peter")) {
-			User newUser = new User("Пётр", "Петров", "peter", "муж");
+			User newUser = new User("peter", "Петр", "Петров", "муж");
 			user = userService.create(newUser);
 		} else {
 			user = userService.findByLogin("peter").get();
@@ -33,7 +33,7 @@ class UsersApplicationTests {
 
 	@Test
 	public void userAddTest() {
-		User newUser = new User("Иван", "Иванов", "ivan.ivanov", "муж");
+		User newUser = new User("ivan.ivanov", "Иван", "Иванов",  "муж");
 		userService.create(newUser);
 		User selectedUser = userService.findByLogin("ivan.ivanov").get();
 

@@ -28,7 +28,7 @@ public class AddressService {
 		
 		Optional<Address> addressOpt = addressRepository.findById(id);
 
-		if (!addressOpt.isPresent()) {
+		if (addressOpt.isEmpty()) {
 			throw new AddressNotFoundException("id - " + id);
 		}
 		return addressOpt.get();
@@ -64,7 +64,7 @@ public class AddressService {
 	public boolean existsByCityStreetHouseFlat(String city, String street, String house, int flat) {
 		Optional<Address> addressOpt = addressRepository.findByCityAndStreetAndHouseNumberAndFlat(city, street, house, flat);
 		
-		if (!addressOpt.isPresent()) return false;
+		if (addressOpt.isEmpty()) return false;
 		
 		return true;
 	}

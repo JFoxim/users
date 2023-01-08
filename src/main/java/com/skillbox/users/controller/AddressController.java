@@ -1,8 +1,11 @@
 package com.skillbox.users.controller;
 
 import com.skillbox.users.dto.AddressDto;
+import com.skillbox.users.dto.UserDto;
 import com.skillbox.users.entity.Address;
+import com.skillbox.users.entity.User;
 import com.skillbox.users.mapper.AddressMapper;
+import com.skillbox.users.mapper.UserMapper;
 import com.skillbox.users.service.AddressService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,5 +89,9 @@ public class AddressController {
 
 	private AddressDto convertToDto(Address address) {
 		return AddressMapper.INSTANCE.convert(address);
+	}
+
+	private UserDto convertToDto(User user) {
+		return UserMapper.INSTANCE.convert(user);
 	}
 }

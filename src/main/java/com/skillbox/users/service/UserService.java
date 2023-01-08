@@ -1,5 +1,6 @@
 package com.skillbox.users.service;
 
+import com.skillbox.users.dto.SubscribDto;
 import com.skillbox.users.entity.User;
 import com.skillbox.users.exception.UserNotFoundExeption;
 import com.skillbox.users.repository.UserRepository;
@@ -43,6 +44,12 @@ public class UserService {
 		}
 	}
 
+	private void checkExistUserById(UUID userId) {
+		if (!userRepository.existsById(userId)) {
+			throw new UserNotFoundExeption("id - " + userId);
+		}
+	}
+
 	public String delete(User user) {
 		checkExistUser(user);
 
@@ -62,19 +69,15 @@ public class UserService {
 	public User findById(UUID id) {
 		Optional<User> userOpt = userRepository.findById(id);
 
-		if (!userOpt.isPresent()) {
+		if (userOpt.isEmpty()) {
 			throw new UserNotFoundExeption("id - " + id);
 		}
 
 		return userOpt.get();
 	}
 
-	public List<User> findActiveAll() {
-		return userRepository.findByDateTimeDeletedIsNull();
-	}
-
 	public List<User> findAll() {
-		return userRepository.findAll();
+		return userRepository.findByDateTimeDeletedIsNull();
 	}
 
 	public Optional<User> findByLogin(String login) {	
@@ -83,10 +86,16 @@ public class UserService {
 
 	public boolean existsByLogin(String login) {
 		Optional<User> userOpt = userRepository.findByLogin(login);
-		
-		if (!userOpt.isPresent()) return false;
-		
-		return true;
+
+		return userOpt.isPresent();
 	}
 
+	public String addSubscrib(SubscribDto subscribDto){
+	    UUID ownerUserId = subscribDto.getOwnerUserId();
+		UUID subscribeUserId = subscribDto.getSubscribeUserId();
+		checkExistUserById(ownerUserId);
+		checkExistUserById(subscribeUserId);
+		userRepository.addSubscribe(ownerUserId, subscribeUserId);
+		return  String.format("Подписка добавлена для %s и %s", ownerUserId, subscribeUserId);
+	}
 }

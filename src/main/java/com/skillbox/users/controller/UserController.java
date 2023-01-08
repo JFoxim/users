@@ -1,5 +1,6 @@
 package com.skillbox.users.controller;
 
+import com.skillbox.users.dto.SubscribDto;
 import com.skillbox.users.dto.UserDto;
 import com.skillbox.users.entity.User;
 import com.skillbox.users.mapper.UserMapper;
@@ -25,7 +26,6 @@ public class UserController {
 	final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	private UserService userService;
-
 	@Autowired
 	public void setUserService(UserService userService) {
 		this.userService = userService;
@@ -81,6 +81,12 @@ public class UserController {
 		checkIdUser(user, id);
 		
 		return userService.delete(user);
+	}
+
+	@PostMapping("/addsubscribe")
+	public String addSubscribe(@RequestBody SubscribDto subscribDto) {
+		logger.info(String.format("Add subscribe  %s", subscribDto));
+		return userService.addSubscrib(subscribDto);
 	}
 
 	private UserDto convertToDto(User user) {
