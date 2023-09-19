@@ -40,6 +40,8 @@ public class UserController {
 
 		List<User> users = userService.findAll();
 		return users.stream().map(this::convertToDto).collect(Collectors.toList());
+
+		//test 1
 	}
 
 	public String convertWithIteration(Map<String, String> map) {
