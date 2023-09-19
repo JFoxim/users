@@ -5,6 +5,9 @@ import com.skillbox.users.dto.UserDto;
 import com.skillbox.users.entity.User;
 import com.skillbox.users.mapper.UserMapper;
 import com.skillbox.users.service.UserService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.factory.Mappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,32 +19,41 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
+@Slf4j
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
-	
-	final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
-	private UserService userService;
-	@Autowired
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
+	private final UserService userService;
+	private final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 
 	@GetMapping
-	public List<UserDto> getUsers() {
-		logger.info("Get list users...");
-		
+	public List<UserDto> getUsers(@RequestHeader Map<String, String> headers) {
+		log.info("Get list users...");
+
+		log.info(convertWithIteration(headers));
+
 		List<User> users = userService.findAll();
 		return users.stream().map(this::convertToDto).collect(Collectors.toList());
 	}
 
+	public String convertWithIteration(Map<String, String> map) {
+		StringBuilder mapAsString = new StringBuilder("{");
+		for (String key : map.keySet()) {
+			mapAsString.append(key).append("=").append(map.get(key)).append(", ");
+		}
+		mapAsString.delete(mapAsString.length()-2, mapAsString.length()).append("}");
+		return mapAsString.toString();
+	}
+
 	@PostMapping
 	public ResponseEntity<Object> create(@RequestBody User user) {
-		logger.info(String.format("Create user with id %s", user.getId()));
+		log.info(String.format("Create user with id %s", user.getId()));
 		
 		User savedUser = userService.create(user);
 
@@ -58,7 +70,7 @@ public class UserController {
 
 	@PutMapping("/{id}")
 	public String update(@RequestBody User user, @PathVariable UUID id) {
-		logger.info(String.format("Update user with id %s", user.getId()));
+		log.info(String.format("Update user with id %s", user.getId()));
 		
 		checkIdUser(user, id);
 
@@ -76,7 +88,7 @@ public class UserController {
 	
 	@DeleteMapping("/{id}")
 	public String delete(@RequestBody User user, @PathVariable UUID id) {
-		logger.info(String.format("Delete user with id %s", user.getId()));
+		log.info(String.format("Delete user with id %s", user.getId()));
 		
 		checkIdUser(user, id);
 		
@@ -85,12 +97,12 @@ public class UserController {
 
 	@PostMapping("/addsubscribe")
 	public String addSubscribe(@RequestBody SubscribDto subscribDto) {
-		logger.info(String.format("Add subscribe  %s", subscribDto));
+		log.info(String.format("Add subscribe  %s", subscribDto));
 		return userService.addSubscrib(subscribDto);
 	}
 
 	private UserDto convertToDto(User user) {
-		return UserMapper.INSTANCE.convert(user);
+		return userMapper.toUserDto(user);
 	}
 
 }

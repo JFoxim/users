@@ -1,9 +1,6 @@
 package com.skillbox.users.entity;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 
@@ -16,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
 @Table(name = "addresses")
 public class Address {
 	@Id
@@ -41,14 +39,6 @@ public class Address {
 
 	public Address() {}
 		
-	public Address(String city, String street, String houseNumber, Integer flatNumber) {
-		super();
-		this.city = city;
-		this.street = street;
-		this.houseNumber = houseNumber;
-		this.flatNumber = flatNumber;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

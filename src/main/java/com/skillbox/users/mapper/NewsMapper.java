@@ -7,6 +7,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface NewsMapper {
-    NewsMapper INSTANCE = Mappers.getMapper(NewsMapper.class);
-    NewsDto convert(News news);
+    NewsDto toNewsDto(News news);
+    News toNewsEntity(NewsDto newsDto);
 }

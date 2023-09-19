@@ -2,11 +2,12 @@ package com.skillbox.users.controller;
 
 import com.skillbox.users.dto.NewsDto;
 import com.skillbox.users.entity.News;
+import com.skillbox.users.mapper.AddressMapper;
 import com.skillbox.users.mapper.NewsMapper;
 import com.skillbox.users.service.NewsService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.factory.Mappers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,22 +19,17 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/news")
 public class NewsController {
-	
-	final static Logger logger = LoggerFactory.getLogger(NewsController.class);
-
-	private NewsService newsService;
-
-	@Autowired
-	public void setNewsService(NewsService newsService) {
-		this.newsService = newsService;
-	}
+	private final NewsService newsService;
+	private final NewsMapper newsMapper = Mappers.getMapper(NewsMapper.class);
 
 	@GetMapping
 	public List<NewsDto> getNews() {
-		logger.info("Get list news...");
+		log.info("Get list news...");
 		
 		List<News> news = newsService.findAll();
 		return news.stream().map(this::convertToDto).collect(Collectors.toList());
@@ -41,7 +37,7 @@ public class NewsController {
 
 	@PostMapping
 	public ResponseEntity<Object> create(@RequestBody News news) {
-		logger.info(String.format("Create user with id %s", news.getId()));
+		log.info(String.format("Create user with id %s", news.getId()));
 		
 		News savedNews = newsService.create(news);
 
@@ -58,7 +54,7 @@ public class NewsController {
 
 	@PutMapping("/{id}")
 	public String update(@RequestBody News news, @PathVariable UUID id) {
-		logger.info(String.format("Update news with id %s", news.getId()));
+		log.info(String.format("Update news with id %s", news.getId()));
 
 		checkIdNews(news, id);
 
@@ -76,7 +72,7 @@ public class NewsController {
 	
 	@DeleteMapping("/{id}")
 	public String delete(@RequestBody News news, @PathVariable UUID id) {
-		logger.info(String.format("Delete news with id %s", news.getId()));
+		log.info(String.format("Delete news with id %s", news.getId()));
 
 		checkIdNews(news, id);
 		
@@ -85,13 +81,13 @@ public class NewsController {
 
 	@GetMapping("/user/{id}")
 	public List<NewsDto> getNewsByUserCreator(@PathVariable UUID id) {
-		logger.info("Get list news...");
+		log.info("Get list news...");
 
 		List<News> news = newsService.findByUserCreatorId(id);
 		return news.stream().map(this::convertToDto).collect(Collectors.toList());
 	}
 
 	private NewsDto convertToDto(News news) {
-		return NewsMapper.INSTANCE.convert(news);
+		return newsMapper.toNewsDto(news);
 	}
 }

@@ -7,9 +7,9 @@ import com.skillbox.users.entity.User;
 import com.skillbox.users.mapper.AddressMapper;
 import com.skillbox.users.mapper.UserMapper;
 import com.skillbox.users.service.AddressService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.factory.Mappers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,29 +22,27 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/addresses")
 public class AddressController {
-	final static Logger logger = LoggerFactory.getLogger(AddressController.class);
 
-	private AddressService addressService;
-	
-	@Autowired
-	public void setAddressService(AddressService addressService) {
-		this.addressService = addressService;
-	}
-	
+	private final AddressService addressService;
+	private final AddressMapper addressMapper = Mappers.getMapper(AddressMapper.class);
+	private final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
+
 	@GetMapping
 	public List<AddressDto> getAddreses() {
-		logger.info("Get list address...");
-		
+		log.info("Get list address...");
 		List<Address> companyDtos = addressService.findAll();
 		return companyDtos.stream().map(this::convertToDto).collect(Collectors.toList());
 	}
 
+
 	@PostMapping
 	public ResponseEntity<Object> create(@RequestBody Address address) {
-		logger.info(String.format("Create address with id %s", address.getId()));
+		log.info(String.format("Create address with id %s", address.getId()));
 		
 		Address savedAddress = addressService.create(address);
 
@@ -61,7 +59,7 @@ public class AddressController {
 
 	@PutMapping("/{id}")
 	public String update(@RequestBody Address address, @PathVariable UUID id) {
-		logger.info(String.format("Update address with id %s", address.getId()));
+		log.info(String.format("Update address with id %s", address.getId()));
 		
 		checkIdAddress(address, id);
 
@@ -79,7 +77,7 @@ public class AddressController {
 	
 	@DeleteMapping("/{id}")
 	public String delete(@RequestBody Address address, @PathVariable UUID id) {
-		logger.info(String.format("Delete address with id %s", address.getId()));
+		log.info(String.format("Delete address with id %s", address.getId()));
 		
 		checkIdAddress(address, id);
 		
@@ -88,10 +86,10 @@ public class AddressController {
 
 
 	private AddressDto convertToDto(Address address) {
-		return AddressMapper.INSTANCE.convert(address);
+		return addressMapper.toAddressDto(address);
 	}
 
 	private UserDto convertToDto(User user) {
-		return UserMapper.INSTANCE.convert(user);
+		return userMapper.toUserDto(user);
 	}
 }
