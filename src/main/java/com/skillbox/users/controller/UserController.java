@@ -42,6 +42,7 @@ public class UserController {
 		return users.stream().map(this::convertToDto).collect(Collectors.toList());
 
 		//test 1
+		//test 2
 	}
 
 	public String convertWithIteration(Map<String, String> map) {
@@ -51,6 +52,7 @@ public class UserController {
 		}
 		mapAsString.delete(mapAsString.length()-2, mapAsString.length()).append("}");
 		return mapAsString.toString();
+		//test 2
 	}
 
 	@PostMapping
