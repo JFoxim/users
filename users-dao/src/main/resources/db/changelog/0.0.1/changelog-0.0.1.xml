@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="changeset-0.0.1" author="Rinat">
+        <sql>
+            CREATE SCHEMA IF NOT EXISTS users;
+        </sql>
+        <createTable tableName="user_contact">
+            <column name="id" type="java.util.UUID">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="user_contact_pk"/>
+            </column>
+            <column name="email" type="varchar(150)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="messenger" type="varchar(50)"/>
+            <column name="phone" type="varchar(50)"/>
+            <column name="address" type="varchar(250)"/>
+        </createTable>
+
+        <createTable tableName="users">
+            <column name="id"
+                    type="bigint"
+                    autoIncrement="true">
+
+            <constraints primaryKey="true"
+                         primaryKeyName="users_pk"
+                         nullable="false"/>
+            </column>
+            <column name="login" type="text">
+                <constraints
+                        uniqueConstraintName="login_unq"
+                        unique="true"
+                        nullable="false"
+                />
+            </column>
+            <column name="first_name" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="text"/>
+            <column name="patronymic" type="text"/>
+            <column name="gender" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_id" type="java.util.UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dt_deleted" type="timestamp"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="users" baseColumnNames="contact_id" constraintName="users_contact_fk"
+                                 referencedTableName="user_contact"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="news">
+            <column name="id" type="java.util.UUID">
+                <constraints primaryKey="true" primaryKeyName="news_pk" nullable="false"/>
+            </column>
+            <column name="dt_create" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creator_user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="news" baseColumnNames="creator_user_id" constraintName="news_user_id_fk"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="subscription">
+            <column name="id" type="bigint">
+                <constraints primaryKeyName="subscription_pk" primaryKey="true" nullable="false"/>
+            </column>
+            <column name="creator_user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subscriber_user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

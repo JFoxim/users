@@ -3,7 +3,7 @@
 http://localhost:8081/swagger-ui/index.html
 ```
 ### Creditails:
-user: user
+userEntity: userEntity
 password: password
 
 #### 1. БД собирается из файла:
