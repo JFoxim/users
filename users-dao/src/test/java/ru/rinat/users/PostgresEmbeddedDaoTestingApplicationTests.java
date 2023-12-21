@@ -1,9 +1,9 @@
 package ru.rinat.users;
 
 import java.time.Duration;
+import java.util.Set;
 import java.util.UUID;
 
-import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,8 +17,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import ru.rinat.users.entity.UserContactEntity;
 import ru.rinat.users.entity.UserEntity;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -76,10 +75,26 @@ public class PostgresEmbeddedDaoTestingApplicationTests {
 
     @Test
     @Sql("/data-check.sql")
-    public void readTest() {
-        UserEntity user = userJpaRepository.findById(13L).orElseThrow();
+    public void subscriptionTest() {
+        UserEntity userPeter = userJpaRepository.findById(13L).orElseThrow();
+        UserEntity userFoma = userJpaRepository.findById(14L).orElseThrow();
 
-        assertNotNull(user);
-        assertEquals("peter", user.getLogin());
+        assertNotNull(userPeter);
+        assertNotNull(userFoma);
+        UserEntityService userEntityService = new UserEntityService(userJpaRepository);
+
+        Set<UserEntity> subscribtionSet = userEntityService
+                .getUserEntityWithSubscriptions(userPeter);
+
+        assertEquals(1, subscribtionSet.size());
+        assertTrue(subscribtionSet.contains(userFoma));
+
+//        Set<UserEntity> subscribtion = new HashSet<>();
+//        subscribtion.add(userFoma);
+//        userPeter.setSubscribedUsers(subscribtion);
+//        userJpaRepository.save(userPeter);
+
+        assertEquals("peter", userPeter.getLogin());
+        assertEquals("foma", userFoma.getLogin());
     }
 }

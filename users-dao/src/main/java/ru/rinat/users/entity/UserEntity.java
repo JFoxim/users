@@ -43,7 +43,7 @@ public class UserEntity {
 	@Column(name = "dt_deleted")
 	private LocalDateTime dateTimeDeleted;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "subscription",
 			joinColumns = @JoinColumn(name = "creator_user_id"),

@@ -1,10 +1,7 @@
 package ru.rinat.users.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
@@ -14,6 +11,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "news")
@@ -36,16 +34,6 @@ public class NewsEntity {
     @Column(name="dt_create")
     private LocalDateTime createDate;
 
-    @Override
-    public String toString() {
-        return "News{" +
-                "id=" + id +
-                ", userCreatorId=" + userCreator.getId() +
-                ", subject='" + subject + '\'' +
-                ", text='" + text + '\'' +
-                ", createDate=" + createDate +
-                '}';
-    }
 
     @Override
     public boolean equals(Object o) {

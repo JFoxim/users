@@ -9,7 +9,7 @@
         <sql>
             CREATE SCHEMA IF NOT EXISTS users;
         </sql>
-        <createTable tableName="user_contact">
+        <createTable tableName="user_contact" schemaName="users">
             <column name="id" type="java.util.UUID">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="user_contact_pk"/>
             </column>
@@ -21,7 +21,7 @@
             <column name="address" type="varchar(250)"/>
         </createTable>
 
-        <createTable tableName="users">
+        <createTable tableName="users" schemaName="users">
             <column name="id"
                     type="bigint"
                     autoIncrement="true">
@@ -51,11 +51,12 @@
             <column name="dt_deleted" type="timestamp"/>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="users" baseColumnNames="contact_id" constraintName="users_contact_fk"
+        <addForeignKeyConstraint baseTableName="users" baseTableSchemaName="users" baseColumnNames="contact_id" constraintName="users_contact_fk"
+                                 referencedTableSchemaName="users"
                                  referencedTableName="user_contact"
                                  referencedColumnNames="id"/>
 
-        <createTable tableName="news">
+        <createTable tableName="news" schemaName="users">
             <column name="id" type="java.util.UUID">
                 <constraints primaryKey="true" primaryKeyName="news_pk" nullable="false"/>
             </column>
@@ -70,11 +71,12 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="news" baseColumnNames="creator_user_id" constraintName="news_user_id_fk"
+        <addForeignKeyConstraint baseTableName="news" baseTableSchemaName="users" baseColumnNames="creator_user_id" constraintName="news_user_id_fk"
+                                 referencedTableSchemaName="users"
                                  referencedTableName="users"
                                  referencedColumnNames="id"/>
 
-        <createTable tableName="subscription">
+        <createTable tableName="subscription" schemaName="users">
             <column name="id" type="bigint">
                 <constraints primaryKeyName="subscription_pk" primaryKey="true" nullable="false"/>
             </column>
