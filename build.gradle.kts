@@ -13,6 +13,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.3" apply false
 	kotlin("jvm") version "1.8.22" apply false
 	kotlin("plugin.spring") version "1.8.22" apply false
+	id("org.springdoc.openapi-gradle-plugin") version "1.6.0" apply false
 }
 
 allprojects {

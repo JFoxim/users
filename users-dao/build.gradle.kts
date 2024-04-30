@@ -1,20 +1,34 @@
 plugins {
     java
 }
+
 val springBootVersion: String by project
 val junitJupiterApiVersion: String by project
+val lombokMapstructBindingVersion: String by project
+val lombokVersion: String by project
+val mapstructVersion: String by project
+val mockitoJunitJupiterVersion: String by project
+val postgresqlVersion: String by project
+val liquibaseCoreVersion: String by project
 
 dependencies {
+    implementation(project(":users-util"))
+    implementation(project(":users-usecase"))
+
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
-    implementation("org.postgresql:postgresql:42.6.0")
+    implementation("net.lbruun.springboot:preliquibase-spring-boot-starter:1.5.0")
+    implementation("org.postgresql:postgresql:$postgresqlVersion")
     implementation("com.zaxxer:HikariCP")
-    implementation("org.liquibase:liquibase-core:4.20.0")
-    implementation("org.projectlombok:lombok:1.18.26")
-    implementation("org.mapstruct:mapstruct:1.5.3.Final")
-    annotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
-    compileOnly("org.projectlombok:lombok:1.18.26")
-    annotationProcessor("org.projectlombok:lombok:1.18.26")
-    testImplementation("org.mockito:mockito-junit-jupiter:5.2.0")
+    implementation("org.liquibase:liquibase-core:$liquibaseCoreVersion")
+
+    implementation("org.projectlombok:lombok:$lombokVersion")
+    testImplementation("org.projectlombok:lombok:$lombokVersion")
+    implementation("org.mapstruct:mapstruct:$mapstructVersion")
+    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:$lombokMapstructBindingVersion")
+    annotationProcessor("org.mapstruct:mapstruct-processor:$mapstructVersion")
+    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+
+    testImplementation("org.mockito:mockito-junit-jupiter:$mockitoJunitJupiterVersion")
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterApiVersion")

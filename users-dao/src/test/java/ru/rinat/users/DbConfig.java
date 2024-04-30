@@ -18,13 +18,18 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.testcontainers.containers.PostgreSQLContainer;
-import static ru.rinat.users.PostgresEmbeddedDaoTestingApplicationTests.postgreSQLContainer;
+import static ru.rinat.users.DaoApplicationTests.postgreSQLContainer;
 
 import liquibase.integration.spring.SpringLiquibase;
+import ru.rinat.users.contact.UserContactJpaRepository;
+import ru.rinat.users.news.NewsJpaRepository;
+import ru.rinat.users.subscription.SubscriptionJpaRepository;
+import ru.rinat.users.userinfo.UserJpaRepository;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackageClasses = {UserJpaRepository.class})
+@EnableJpaRepositories(basePackageClasses = {UserJpaRepository.class,
+        SubscriptionJpaRepository.class, NewsJpaRepository.class, UserContactJpaRepository.class})
 @Profile("DaoTest")
 public class DbConfig {
 
@@ -32,7 +37,7 @@ public class DbConfig {
     public DataSource dataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
         ds.setDriverClassName("org.postgresql.Driver");
-        ds.setUrl(format("jdbc:postgresql://%s:%s/%s", postgreSQLContainer.getContainerIpAddress(),
+        ds.setUrl(format("jdbc:postgresql://%s:%s/%s", postgreSQLContainer.getHost(),
                 postgreSQLContainer.getMappedPort(
                         PostgreSQLContainer.POSTGRESQL_PORT), postgreSQLContainer.getDatabaseName()));
         ds.setUsername(postgreSQLContainer.getUsername());
@@ -53,7 +58,7 @@ public class DbConfig {
                 = new LocalContainerEntityManagerFactoryBean();
         lcemfb.setDataSource(dataSource);
         // set the packages to scan , it can be useful if you have big project and you just need to local partial entities for testing
-        lcemfb.setPackagesToScan("ru.rinat.users", "ru.rinat.users.entity");
+        lcemfb.setPackagesToScan("ru.rinat.users", "ru.rinat.users.subscription.userinfo");
         HibernateJpaVendorAdapter va = new HibernateJpaVendorAdapter();
         lcemfb.setJpaVendorAdapter(va);
         lcemfb.setJpaProperties(getHibernateProperties());

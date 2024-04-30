@@ -2,7 +2,7 @@ version: '3.6'
 
 services:
   pdb:
-    image: postgres:14.5
+    image: postgres:14.5-alpine
     restart: always
     container_name: postgres-db
     environment:

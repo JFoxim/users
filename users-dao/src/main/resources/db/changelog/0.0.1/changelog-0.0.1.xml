@@ -5,27 +5,43 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <changeSet id="changeset-0.0.1" author="Rinat">
-        <sql>
+    <changeSet id="1" author="rinat">
+        <sql dbms="postgresql">
             CREATE SCHEMA IF NOT EXISTS users;
         </sql>
-        <createTable tableName="user_contact" schemaName="users">
-            <column name="id" type="java.util.UUID">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="user_contact_pk"/>
+    </changeSet>
+
+    <changeSet id="2" author="rinat">
+        <createSequence
+                sequenceName="user_contact_info_seq"
+                incrementBy="1"
+                minValue="1"
+                startValue="1"
+                cycle="false"
+        />
+        <createSequence
+                sequenceName="subscription_seq"
+                incrementBy="1"
+                minValue="1"
+                startValue="1"
+                cycle="false"
+        />
+
+        <createTable tableName="user_contact_info" schemaName="users">
+            <column name="id" type = "bigint" defaultValueComputed="nextval('user_contact_info_seq')">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="user_contact_info_pk"/>
             </column>
-            <column name="email" type="varchar(150)">
+            <column name="user_id" type="bigint">
+                    <constraints nullable="false"/>
+            </column>
+            <column name="value" type="varchar(250)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="messenger" type="varchar(50)"/>
-            <column name="phone" type="varchar(50)"/>
-            <column name="address" type="varchar(250)"/>
+            <column name="type" type="varchar(50)"/>
         </createTable>
 
         <createTable tableName="users" schemaName="users">
-            <column name="id"
-                    type="bigint"
-                    autoIncrement="true">
-
+            <column name="id" type="bigint" autoIncrement="true">
             <constraints primaryKey="true"
                          primaryKeyName="users_pk"
                          nullable="false"/>
@@ -34,8 +50,7 @@
                 <constraints
                         uniqueConstraintName="login_unq"
                         unique="true"
-                        nullable="false"
-                />
+                        nullable="false"/>
             </column>
             <column name="first_name" type="text">
                 <constraints nullable="false"/>
@@ -45,15 +60,20 @@
             <column name="gender" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="contact_id" type="java.util.UUID">
-                <constraints nullable="false"/>
+            <column name="email" type="text">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="phone" type="text">
             </column>
             <column name="dt_deleted" type="timestamp"/>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="users" baseTableSchemaName="users" baseColumnNames="contact_id" constraintName="users_contact_fk"
+        <addForeignKeyConstraint baseTableName="user_contact_info"
+                                 baseTableSchemaName="users"
+                                 baseColumnNames="user_id"
+                                 constraintName="users_contact_info_fk"
                                  referencedTableSchemaName="users"
-                                 referencedTableName="user_contact"
+                                 referencedTableName="users"
                                  referencedColumnNames="id"/>
 
         <createTable tableName="news" schemaName="users">
@@ -61,6 +81,9 @@
                 <constraints primaryKey="true" primaryKeyName="news_pk" nullable="false"/>
             </column>
             <column name="dt_create" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subject" type="text">
                 <constraints nullable="false"/>
             </column>
             <column name="text" type="text">
@@ -71,13 +94,18 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="news" baseTableSchemaName="users" baseColumnNames="creator_user_id" constraintName="news_user_id_fk"
+        <addForeignKeyConstraint baseTableName="news"
+                                 baseTableSchemaName="users"
+                                 baseColumnNames="creator_user_id"
+                                 constraintName="news_user_id_fk"
                                  referencedTableSchemaName="users"
                                  referencedTableName="users"
                                  referencedColumnNames="id"/>
 
         <createTable tableName="subscription" schemaName="users">
-            <column name="id" type="bigint">
+            <column name="id"
+                    type="bigint"
+                    autoIncrement="true">
                 <constraints primaryKeyName="subscription_pk" primaryKey="true" nullable="false"/>
             </column>
             <column name="creator_user_id" type="bigint">
@@ -86,6 +114,10 @@
             <column name="subscriber_user_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
+            <column name="date_start" type="timestamp" defaultValueComputed="current_timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_end" type="timestamp"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
