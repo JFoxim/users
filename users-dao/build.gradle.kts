@@ -1,3 +1,4 @@
+
 plugins {
     java
 }
@@ -10,13 +11,14 @@ val mapstructVersion: String by project
 val mockitoJunitJupiterVersion: String by project
 val postgresqlVersion: String by project
 val liquibaseCoreVersion: String by project
+val preliquibaseVersion: String by project
 
 dependencies {
     implementation(project(":users-util"))
     implementation(project(":users-usecase"))
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
-    implementation("net.lbruun.springboot:preliquibase-spring-boot-starter:1.5.0")
+    implementation("net.lbruun.springboot:preliquibase-spring-boot-starter:$preliquibaseVersion")
     implementation("org.postgresql:postgresql:$postgresqlVersion")
     implementation("com.zaxxer:HikariCP")
     implementation("org.liquibase:liquibase-core:$liquibaseCoreVersion")
