@@ -13,6 +13,8 @@ import java.time.ZonedDateTime;
 @Setter
 @ToString
 public class UserRequest {
+
+    private Long id;
     @NotNull
     private String login;
     @NotNull

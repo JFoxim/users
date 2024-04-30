@@ -11,7 +11,6 @@ public interface UserRequestMapper {
    }
 
    @Mapping(target = "isDeleted", ignore = true)
-   @Mapping(target = "id", ignore = true)
    UserDefaultDto toDtoImpl(UserRequest userRequest);
 
    default UserResponse toResponseDto(UserDto userDto) {
