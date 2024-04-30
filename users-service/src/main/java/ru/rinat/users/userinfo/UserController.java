@@ -132,7 +132,7 @@ public class UserController implements UserSpecification {
 
     @Override
     @ResponseBody
-    @GetMapping(value = "/find-all")
+    @GetMapping(value = "/find-all/{page}/{size}/{sortDir}/{sort}")
     public List<UserResponse> findAll(@PathVariable("page") int page,
                                       @PathVariable("size") int size,
                                       @PathVariable("sortDir") String sortDir,
