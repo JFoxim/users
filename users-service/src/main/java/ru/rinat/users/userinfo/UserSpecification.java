@@ -1,22 +1,22 @@
 package ru.rinat.users.userinfo;
 
-import org.springframework.http.ResponseEntity;
+import ru.rinat.users.common.CommonResponseDto;
 
 import java.util.List;
 
 public interface UserSpecification {
 
-    ResponseEntity<Object> create(UserRequest userRequest);
+    CommonResponseDto<?> create(UserRequest userRequest);
 
-    void update(UserRequest userRequest, Long id);
+    CommonResponseDto<?> update(UserRequest userRequest, Long id);
 
-    void delete(Long id);
+    CommonResponseDto<?> delete(Long id);
 
-    void markDeleted(Long id);
+    CommonResponseDto<?> markDeleted(Long id);
 
-    UserResponse findById(Long id);
+    CommonResponseDto<UserResponse> findById(Long id);
 
-    UserResponse findByLogin(String login);
+    CommonResponseDto<UserResponse> findByLogin(String login);
 
-    List<UserResponse> findAll(int page, int size, String sortDir, String sort);
+    CommonResponseDto<List<UserResponse>> findAll(int page, int size, String sortDir, String sort);
 }
