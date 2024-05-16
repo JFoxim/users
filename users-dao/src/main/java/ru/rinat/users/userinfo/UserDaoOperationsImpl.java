@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ru.rinat.users.errors.UsersServiceException;
 import ru.rinat.users.rules.DateTimeRules;
 
 import java.time.ZoneId;
@@ -11,6 +12,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static ru.rinat.users.errors.Constants.USER_NOT_FOUND_EXCEPTION;
 
 @Service
 @RequiredArgsConstructor
@@ -55,7 +58,10 @@ public class UserDaoOperationsImpl implements UserDaoOperations {
                 .map(userJpaRepository::findById)
                 .orElseThrow()
                 .map(userDtoMapper::toDto)
-                .orElseThrow();
+                .orElseThrow(() -> UsersServiceException.builder()
+                        .code(USER_NOT_FOUND_EXCEPTION)
+                        .message(String.join("User not found by id: ", id.toString()))
+                        .build());
     }
 
     @Override
@@ -65,6 +71,16 @@ public class UserDaoOperationsImpl implements UserDaoOperations {
                 .orElseThrow()
                 .map(userDtoMapper::toDto)
                 .orElseThrow();
+    }
+
+    public UserEntity getById(Long id) {
+        return Optional.ofNullable(id)
+                .map(userJpaRepository::findById)
+                .orElseThrow()
+                .orElseThrow(() -> UsersServiceException.builder()
+                        .code(USER_NOT_FOUND_EXCEPTION)
+                        .message(String.join("User not found by id: ", id.toString()))
+                        .build());
     }
 
     @Override

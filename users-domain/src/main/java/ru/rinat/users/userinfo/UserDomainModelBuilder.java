@@ -11,7 +11,7 @@ import java.time.ZonedDateTime;
 
 import static ru.rinat.users.validation.RuleConstants.*;
 
-class UserDomainModelBuilder implements  UserDomainModel.Builder {
+class UserDomainModelBuilder implements UserDomainModel.Builder {
     private Long id;
     private String login;
     private String firstName;

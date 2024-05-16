@@ -1,8 +1,7 @@
 package ru.rinat.users.userinfo;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
-
 import lombok.Setter;
 import lombok.ToString;
 import ru.rinat.users.Gender;
@@ -13,18 +12,15 @@ import java.time.ZonedDateTime;
 @Setter
 @ToString
 public class UserRequest {
-
-    private Long id;
-    @NotNull
+    @NotBlank
     private String login;
-    @NotNull
+    @NotBlank
     private String firstName;
-    @NotNull
+    @NotBlank
     private String lastName;
     private String patronymic;
-    @NotNull
     private Gender gender;
-    @NotNull
+    @NotBlank
     private String email;
     private String phone;
     private ZonedDateTime dateTimeDeleted;

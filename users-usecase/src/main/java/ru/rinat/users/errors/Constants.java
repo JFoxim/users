@@ -6,5 +6,7 @@ public final class Constants {
 
     public static final String COMMON_EXCEPTION = "COMMON_EXCEPTION";
 
+    public static final String USER_NOT_FOUND_EXCEPTION = "USER_NOT_FOUND_EXCEPTION";
+
     public static final String DEFAULT_EXCEPTION_MESSAGE = "DEFAULT_EXCEPTION_MESSAGE";
 }

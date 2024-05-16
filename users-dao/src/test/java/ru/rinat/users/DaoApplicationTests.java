@@ -151,6 +151,10 @@ public class DaoApplicationTests {
         List<SubscriptionEntity> peterSubscribtions = subscriptionJpaRepository.findByUserCreatorId(userPeter.getId());
         List<SubscriptionEntity> fomeSubscribtions = subscriptionJpaRepository.findByUserCreatorId(userFoma.getId());
 
+        List<SubscriptionEntity> userCreator = subscriptionJpaRepository.findByCreatorUser(userPeter);
+        assertEquals(1, userCreator.size());
+        assertEquals(userCreator.stream().findFirst().orElseThrow().getCreatorUser().getId(), userPeter.getId());
+
         assertEquals(1, peterSubscribtions.size());
         assertEquals(1, fomeSubscribtions.size());
         SubscriptionEntity mySubscriptionEntity = peterSubscribtions.stream().findFirst().orElseThrow();

@@ -18,7 +18,7 @@ dependencies {
     implementation(project(":users-usecase"))
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
-    implementation("net.lbruun.springboot:preliquibase-spring-boot-starter:$preliquibaseVersion")
+    //implementation("net.lbruun.springboot:preliquibase-spring-boot-starter:$preliquibaseVersion")
     implementation("org.postgresql:postgresql:$postgresqlVersion")
     implementation("com.zaxxer:HikariCP")
     implementation("org.liquibase:liquibase-core:$liquibaseCoreVersion")

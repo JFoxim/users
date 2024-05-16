@@ -16,14 +16,20 @@ val springdocOpenapiUiWebMvcVersion: String by project
 dependencies {
     implementation(project(":users-usecase"))
     implementation(project(":users-dao"))
+    implementation(project(":users-util"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 
     //implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterApiVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterApiVersion")
 
-    implementation("org.springdoc:springdoc-openapi-ui:$springdocOpenapiUiVersion")
+    //implementation("org.springdoc:springdoc-openapi-ui:$springdocOpenapiUiVersion") 1.6.15
+    // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
+    // uses for spring boot 3 version
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocOpenapiUiVersion")
+
 
     implementation("org.projectlombok:lombok:$lombokVersion")
     testImplementation("org.projectlombok:lombok:$lombokVersion")

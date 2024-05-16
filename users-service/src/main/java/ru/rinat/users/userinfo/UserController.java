@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +43,7 @@ public class UserController implements UserSpecification {
     @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Tag(name = "Создание пользователя", description = "Позволяет создать нового пользователя")
     @ApiResponses(value = {
-            @ApiResponse(description = "Пользователь создан успешно", responseCode = "201", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseEntity.class))),
+            @ApiResponse(description = "Пользователь создан успешно", responseCode = "201", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommonResponseDto.class))),
             @ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true)))
     })
     public CommonResponseDto<?> create(@RequestBody @Valid UserRequest userRequest) {
@@ -63,18 +62,18 @@ public class UserController implements UserSpecification {
     }
 
     @Override
-    @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
+    @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Tag(name = "Изменение пользователя", description = "Позволяет отредактировать поля пользователя")
     @ApiResponses(value = {
-            @ApiResponse(description = "Пользователь изменён успешно", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = void.class))),
+            @ApiResponse(description = "Пользователь изменён успешно", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommonResponseDto.class))),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден", content = @Content),
             @ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true)))
     })
     public CommonResponseDto<?> update(@RequestBody @Valid UserRequest userRequest, @PathVariable Long id) {
         log.info("Receive request update user {} by id {}", userRequest, id);
 
-        userOperations.update(userRequestMapper.toDto(userRequest));
+        userOperations.update(userRequestMapper.toDto(userRequest, id));
 
         log.info("User {} successfully updated", userRequest);
 
@@ -127,7 +126,7 @@ public class UserController implements UserSpecification {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Tag(name = "Получить пользователя по id", description = "Позволяет получить пользователя по id")
     @ApiResponses(value = {
-            @ApiResponse(description = "Пользователь найден успешно", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseEntity.class))),
+            @ApiResponse(description = "Пользователь найден успешно", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommonResponseDto.class))),
             @ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true)))
     })
     public @ResponseBody CommonResponseDto<UserResponse> findById(@PathVariable("id") Long id) {
@@ -143,7 +142,7 @@ public class UserController implements UserSpecification {
     @GetMapping(value = "/login/{login}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Tag(name = "Получить пользователя по login", description = "Позволяет получить пользователя по login")
     @ApiResponses(value = {
-            @ApiResponse(description = "Пользователь найден успешно", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseEntity.class))),
+            @ApiResponse(description = "Пользователь найден успешно", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommonResponseDto.class))),
             @ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true)))
     })
     public @ResponseBody CommonResponseDto<UserResponse> findByLogin(@PathVariable("login") String login) {

@@ -5,14 +5,15 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <changeSet id="1" author="rinat">
-        <sql dbms="postgresql">
-            CREATE SCHEMA IF NOT EXISTS users;
-        </sql>
-    </changeSet>
+<!--    <changeSet id="1" author="rinat">-->
+<!--        <sql dbms="postgresql">-->
+<!--            CREATE SCHEMA IF NOT EXISTS users;-->
+<!--        </sql>-->
+<!--    </changeSet>-->
 
-    <changeSet id="2" author="rinat">
+    <changeSet id="1" author="rinat">
         <createSequence
+                schemaName="public"
                 sequenceName="user_contact_info_seq"
                 incrementBy="1"
                 minValue="1"
@@ -20,14 +21,17 @@
                 cycle="false"
         />
         <createSequence
+                schemaName="public"
                 sequenceName="subscription_seq"
                 incrementBy="1"
                 minValue="1"
                 startValue="1"
                 cycle="false"
         />
+    </changeSet>
 
-        <createTable tableName="user_contact_info" schemaName="users">
+    <changeSet id="2" author="rinat">
+         <createTable tableName="user_contact_info" schemaName="public">
             <column name="id" type = "bigint" defaultValueComputed="nextval('user_contact_info_seq')">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="user_contact_info_pk"/>
             </column>
@@ -40,7 +44,7 @@
             <column name="type" type="varchar(50)"/>
         </createTable>
 
-        <createTable tableName="users" schemaName="users">
+        <createTable tableName="users" schemaName="public">
             <column name="id" type="bigint" autoIncrement="true">
             <constraints primaryKey="true"
                          primaryKeyName="users_pk"
@@ -69,14 +73,14 @@
         </createTable>
 
         <addForeignKeyConstraint baseTableName="user_contact_info"
-                                 baseTableSchemaName="users"
+                                 baseTableSchemaName="public"
                                  baseColumnNames="user_id"
                                  constraintName="users_contact_info_fk"
-                                 referencedTableSchemaName="users"
+                                 referencedTableSchemaName="public"
                                  referencedTableName="users"
                                  referencedColumnNames="id"/>
 
-        <createTable tableName="news" schemaName="users">
+        <createTable tableName="news" schemaName="public">
             <column name="id" type="java.util.UUID">
                 <constraints primaryKey="true" primaryKeyName="news_pk" nullable="false"/>
             </column>
@@ -95,14 +99,14 @@
         </createTable>
 
         <addForeignKeyConstraint baseTableName="news"
-                                 baseTableSchemaName="users"
+                                 baseTableSchemaName="public"
                                  baseColumnNames="creator_user_id"
                                  constraintName="news_user_id_fk"
-                                 referencedTableSchemaName="users"
+                                 referencedTableSchemaName="public"
                                  referencedTableName="users"
                                  referencedColumnNames="id"/>
 
-        <createTable tableName="subscription" schemaName="users">
+        <createTable tableName="subscription" schemaName="public">
             <column name="id"
                     type="bigint"
                     autoIncrement="true">

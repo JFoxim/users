@@ -42,7 +42,7 @@ public class DbConfig {
                         PostgreSQLContainer.POSTGRESQL_PORT), postgreSQLContainer.getDatabaseName()));
         ds.setUsername(postgreSQLContainer.getUsername());
         ds.setPassword(postgreSQLContainer.getPassword());
-        ds.setSchema(postgreSQLContainer.getDatabaseName());
+        ds.setSchema("public");
         return ds;
     }
 
@@ -85,12 +85,11 @@ public class DbConfig {
 
     @Bean
     public SpringLiquibase springLiquibase(DataSource dataSource) throws SQLException {
-        tryToCreateSchema(dataSource);
+        //tryToCreateSchema(dataSource);
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDropFirst(true);
         liquibase.setDataSource(dataSource);
-        liquibase.setDefaultSchema("users");
-        //liquibase.setIgnoreClasspathPrefix(false);
+        liquibase.setDefaultSchema("public");
         liquibase.setChangeLog("classpath:/db/changelog/db.changelog-master.xml");
         return liquibase;
     }
@@ -113,9 +112,9 @@ public class DbConfig {
 
     }
 
-    private void tryToCreateSchema(DataSource dataSource) throws SQLException {
-        String CREATE_SCHEMA_QUERY = "CREATE SCHEMA IF NOT EXISTS users";
-        dataSource.getConnection().createStatement().execute(CREATE_SCHEMA_QUERY);
-    }
+//    private void tryToCreateSchema(DataSource dataSource) throws SQLException {
+//        String CREATE_SCHEMA_QUERY = "CREATE SCHEMA IF NOT EXISTS users";
+//        dataSource.getConnection().createStatement().execute(CREATE_SCHEMA_QUERY);
+//    }
 
 }

@@ -2,10 +2,12 @@ package ru.rinat.users.config;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Setter
 @Getter
+@ToString
 @ConfigurationProperties("ru.rinat.users.database")
 public class DatabaseProperties {
     private String url;
