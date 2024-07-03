@@ -5,7 +5,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.rinat.users.userinfo.UserDaoOperationsImpl;
-import ru.rinat.users.userinfo.UserDto;
 import ru.rinat.users.userinfo.UserEntity;
 
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class SubDaoOperationsImpl implements SubscriptionOperations {
+public class SubDaoOperationsImpl implements SubscriptionDaoOperations {
 
     private final SubscriptionJpaRepository subscriptionJpaRepository;
 
@@ -45,12 +44,19 @@ public class SubDaoOperationsImpl implements SubscriptionOperations {
     }
 
     @Override
-    public List<SubscriptionDto> findByCreatorUser(UserDto creatorUser) {
-        UserEntity userEntity = userDaoOperations.getById(creatorUser.getId());
+    public List<SubscriptionDto> findByCreatorUserId(Long creatorUserId) {
+        UserEntity userEntity = userDaoOperations.getById(creatorUserId);
 
         return subscriptionJpaRepository.findByCreatorUser(userEntity).stream()
                 .map(subscriptionDtoMapper::toDtoImpl)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public SubscriptionDto findById(Long subscriptionId) {
+        return subscriptionDtoMapper.toDto(
+                subscriptionJpaRepository.findById(subscriptionId)
+                .orElseThrow());
     }
 
     @Override

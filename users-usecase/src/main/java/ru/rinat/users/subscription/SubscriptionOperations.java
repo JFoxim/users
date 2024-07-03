@@ -1,18 +1,18 @@
 package ru.rinat.users.subscription;
 
-import ru.rinat.users.userinfo.UserDto;
-
 import java.util.List;
 
 public interface SubscriptionOperations {
 
-    SubscriptionDto create(SubscriptionDto userDto);
+    SubscriptionDto create(SubscriptionDto subscriptionDto);
 
-    SubscriptionDto update(SubscriptionDto userDto);
+    SubscriptionDto update(SubscriptionDto subscriptionDto);
 
     void deleteById(Long id);
 
-    List<SubscriptionDto> findByCreatorUser(UserDto userCreator);
+    List<SubscriptionDto> findByCreatorUserId(Long userCreatorId);
+
+    SubscriptionDto findById(Long id);
 
     List<SubscriptionDto> findAll(int page, int size, String sortDir, String sort);
 }

@@ -63,7 +63,8 @@ class NewsDomainModelBuilder implements NewsDomainModel.Builder {
                 validator.requireNotNull(id, ErrorMessage.ID),
                 validator.requireNotNull(userCreator, ErrorMessage.USER_CREATOR),
                 validator.requireNotEmpty(subject, ErrorMessage.SUBJECT),
-                validator.requireNotEmpty(text, ErrorMessage.TEXT)
+                validator.requireNotEmpty(text, ErrorMessage.TEXT),
+                createDateTime
         );
     }
 

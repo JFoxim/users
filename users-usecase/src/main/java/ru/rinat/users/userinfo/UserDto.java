@@ -28,10 +28,10 @@ public interface UserDto {
         Builder dateTimeDeleted(ZonedDateTime dateTimeDeleted);
         Builder isDeleted(Boolean isDeleted);
         UserDto build();
+    }
 
-        static Builder builder() {
-            return UserDefaultDto.builder();
-        }
+    static Builder builder() {
+        return UserDefaultDto.builder();
     }
 
 }

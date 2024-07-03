@@ -1,5 +1,6 @@
 package ru.rinat.users.news;
 
+import ru.rinat.users.DomainModelException;
 import ru.rinat.users.userinfo.UserDomainModel;
 
 import java.time.ZoneId;
@@ -15,12 +16,19 @@ final class NewsDomainEntity implements NewsDomainModel {
     private final String text;
     private final ZonedDateTime createDateTime;
 
-    public NewsDomainEntity(UUID id, UserDomainModel userCreator, String subject, String text) {
+    public NewsDomainEntity(UUID id, UserDomainModel userCreator, String subject, String text, ZonedDateTime createDateTime) {
         this.id = id;
-        this.userCreator = userCreator;
+        this.userCreator = checkForUserDeleted(userCreator);
         this.subject = subject;
         this.text = text;
-        this.createDateTime = ZonedDateTime.now(ZoneId.of(MSK_TIME_ZONE));
+        this.createDateTime = createDateTime == null ? ZonedDateTime.now(ZoneId.of(MSK_TIME_ZONE)) : createDateTime;
+    }
+
+    private static UserDomainModel checkForUserDeleted(UserDomainModel user) {
+        if (user.getIsDeleted()) {
+            throw new DomainModelException("User with id = " + user.getId() + " is marked as deleted and cannot add a news");
+        }
+        return user;
     }
 
     @Override

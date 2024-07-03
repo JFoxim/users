@@ -1,6 +1,9 @@
 package ru.rinat.users.errors;
 
-public class UsersServiceException extends RuntimeException {
+
+import java.util.function.Supplier;
+
+public class UsersServiceException extends RuntimeException implements Supplier<UsersServiceException> {
     private String code;
     private String message;
 
@@ -31,6 +34,11 @@ public class UsersServiceException extends RuntimeException {
 
     public static Builder builder() {
         return new UsersServiceException().new Builder();
+    }
+
+    @Override
+    public UsersServiceException get() {
+        return null;
     }
 
     public class Builder {

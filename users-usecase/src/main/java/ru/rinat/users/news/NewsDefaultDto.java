@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 import ru.rinat.users.userinfo.UserDto;
 
 import java.time.ZonedDateTime;
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 @Getter
 @Builder
+@ToString
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 final class NewsDefaultDto implements NewsDto {
     private final UUID id;

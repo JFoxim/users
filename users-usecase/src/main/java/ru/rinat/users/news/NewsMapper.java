@@ -17,4 +17,6 @@ public interface NewsMapper {
     NewsDefaultDto mapToDtoImpl(NewsDomainEntity newsDomainEntity);
 
     NewsDomainEntity mapToDomainEntity(NewsDefaultDto newsDefaultDto);
+
+
 }

@@ -6,11 +6,11 @@ import ru.rinat.users.userinfo.UserDomainModel;
 import java.time.ZonedDateTime;
 
 public interface SubscriptionDomainModel {
-    Long id();
-    UserDomainModel creatorUser();
-    UserDomainModel subscriberUser();
-    ZonedDateTime dateStart();
-    ZonedDateTime dateEnd();
+    Long getId();
+    UserDomainModel getCreatorUser();
+    UserDomainModel getSubscriberUser();
+    ZonedDateTime getDateStart();
+    ZonedDateTime getDateEnd();
 
     interface Builder {
         Builder id(Long Id);

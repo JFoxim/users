@@ -12,6 +12,7 @@ val mapstructVersion: String by project
 val springdocOpenapiUiVersion: String by project
 val mockitoJunitJupiterVersion: String by project
 val springdocOpenapiUiWebMvcVersion: String by project
+val assertjCoreVersion: String by project
 
 dependencies {
     implementation(project(":users-usecase"))
@@ -20,15 +21,15 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.0")
+    //implementation("org.springdoc:springdoc-openapi-ui:$springdocOpenapiUiVersion") 1.6.15
+    // uses for spring boot 3 version
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocOpenapiUiVersion")
 
     //implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterApiVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterApiVersion")
-
-    //implementation("org.springdoc:springdoc-openapi-ui:$springdocOpenapiUiVersion") 1.6.15
-    // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
-    // uses for spring boot 3 version
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocOpenapiUiVersion")
+    testImplementation("org.assertj:assertj-core:$assertjCoreVersion")
 
 
     implementation("org.projectlombok:lombok:$lombokVersion")
@@ -42,4 +43,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     //testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.junit.vintage:junit-vintage-engine:5.9.2")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }

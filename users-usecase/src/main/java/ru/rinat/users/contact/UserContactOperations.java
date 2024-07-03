@@ -10,7 +10,11 @@ public interface UserContactOperations {
 
     UserContactDto update(UserContactDto userDto);
 
+    UserContactDto findById(Long id);
+
     void deleteById(Long id);
 
     List<UserContactDto> findByUserCreator(UserDto userDto);
+
+    List<UserContactDto> findByUserCreatorId(Long userId);
 }

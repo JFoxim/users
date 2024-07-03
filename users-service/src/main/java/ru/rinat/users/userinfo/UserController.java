@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,13 +41,13 @@ public class UserController implements UserSpecification {
 
     @Override
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Tag(name = "Создание пользователя", description = "Позволяет создать нового пользователя")
     @ApiResponses(value = {
             @ApiResponse(description = "Пользователь создан успешно", responseCode = "201", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommonResponseDto.class))),
             @ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true)))
     })
-    public CommonResponseDto<?> create(@RequestBody @Valid UserRequest userRequest) {
+    public ResponseEntity<CommonResponseDto<?>> create(@RequestBody @Valid UserRequest userRequest) {
         log.info("Receive request create user: {}", userRequest);
 
         UserDto userDto = userOperations.create(userRequestMapper.toDto(userRequest));
@@ -54,16 +55,19 @@ public class UserController implements UserSpecification {
         URI locationUri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(userDto.getId()).toUri();
 
+
         log.info("User {} successfully created", userRequest);
 
-        return CommonResponseDto.<NullType>builder()
-                .success(true)
-                .build();
+        return ResponseEntity
+                .created(locationUri)
+                .body(CommonResponseDto.<NullType>builder()
+                        .success(true)
+                        .build());
     }
 
     @Override
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Tag(name = "Изменение пользователя", description = "Позволяет отредактировать поля пользователя")
     @ApiResponses(value = {
             @ApiResponse(description = "Пользователь изменён успешно", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CommonResponseDto.class))),
@@ -84,7 +88,7 @@ public class UserController implements UserSpecification {
 
     @Override
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     @Tag(name = "Удаление пользователя", description = "Позволяет удалить пользователя")
     @ApiResponses(value = {
             @ApiResponse(description = "Пользователь удалён успешно", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = void.class))),
@@ -148,13 +152,14 @@ public class UserController implements UserSpecification {
     public @ResponseBody CommonResponseDto<UserResponse> findByLogin(@PathVariable("login") String login) {
         return CommonResponseDto.<UserResponse>builder()
                 .success(true)
-                .data( userRequestMapper.toResponseDto(userOperations.findByLogin(login)))
+                .data(userRequestMapper.toResponseDto(userOperations.findByLogin(login)))
                 .build();
     }
 
     @Override
     @ResponseBody
     @GetMapping(value = "/all/{page}/{size}/{sortDir}/{sort}")
+    @Tag(name = "Получить всех пользователей", description = "Позволяет получить всех пользователей")
     public CommonResponseDto<List<UserResponse>> findAll(@PathVariable("page") int page,
                                       @PathVariable("size") int size,
                                       @PathVariable("sortDir") String sortDir,

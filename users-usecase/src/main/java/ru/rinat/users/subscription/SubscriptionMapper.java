@@ -17,4 +17,5 @@ public interface SubscriptionMapper {
     SubscriptionDefaultDto mapToDtoImpl(SubscriptionDomainEntity subscriptionDomainEntity);
 
     SubscriptionDomainEntity mapToDomainEntity(SubscriptionDefaultDto subscriptionDefaultDto);
+
 }

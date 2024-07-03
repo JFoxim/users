@@ -21,7 +21,7 @@ public interface SubscriptionDtoMapper {
     }
 
     @Mapping(target = "creatorUser", expression = "java(USER_DTO_MAPPER.toDto(subscriptionEntity.getCreatorUser()))")
-    @Mapping(target = "subscriberUser", expression = "java(USER_DTO_MAPPER.toDto(subscriptionEntity.getCreatorUser()))")
+    @Mapping(target = "subscriberUser", expression = "java(USER_DTO_MAPPER.toDto(subscriptionEntity.getSubscriberUser()))")
     SubscriptionDefaultDto toDtoImpl(SubscriptionEntity subscriptionEntity);
 
 }

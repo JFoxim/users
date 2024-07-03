@@ -7,8 +7,8 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Builder
+@RequiredArgsConstructor
 public class UserOperationsImpl implements UserOperations {
 
     private final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
@@ -20,8 +20,6 @@ public class UserOperationsImpl implements UserOperations {
                 .map(userMapper::toDomainModel)
                 .map(userMapper::toDto)
                 .map(userDaoOperations::create)
-                .map(userMapper::toDomainModel)
-                .map(userMapper::toDto)
                 .orElseThrow();
     }
 
@@ -31,8 +29,6 @@ public class UserOperationsImpl implements UserOperations {
                 .map(userMapper::toDomainModel)
                 .map(userMapper::toDto)
                 .map(userDaoOperations::update)
-                .map(userMapper::toDomainModel)
-                .map(userMapper::toDto)
                 .orElseThrow();
     }
 

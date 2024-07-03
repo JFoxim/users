@@ -1,23 +1,22 @@
 package ru.rinat.users.contact;
 
-import ru.rinat.users.DomainModelException;
 import ru.rinat.users.userinfo.UserDto;
 
 public interface UserContactDto {
     Long getId();
     UserDto getUser();
     String getValue();
-    String getType();
+    UserContactType getUserContactType();
 
     interface Builder {
         Builder id(Long Id);
         Builder user(UserDto user);
         Builder value(String value);
-        Builder type(String type);
-        UserContactDto build() throws DomainModelException;
+        Builder userContactType(UserContactType userContactType);
+        UserContactDto build();
     }
 
-    static Builder builder() {
-        return UserContactDto.builder();
+    static UserContactDto.Builder builder() {
+        return UserContactDefaultDto.builder();
     }
 }

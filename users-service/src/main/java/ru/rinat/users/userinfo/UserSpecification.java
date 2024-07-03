@@ -1,12 +1,13 @@
 package ru.rinat.users.userinfo;
 
+import org.springframework.http.ResponseEntity;
 import ru.rinat.users.common.CommonResponseDto;
 
 import java.util.List;
 
 public interface UserSpecification {
 
-    CommonResponseDto<?> create(UserRequest userRequest);
+    ResponseEntity<CommonResponseDto<?>> create(UserRequest userRequest);
 
     CommonResponseDto<?> update(UserRequest userRequest, Long id);
 

@@ -12,7 +12,7 @@ class UserContactDomainModelBuilder implements UserContactDomainModel.Builder {
     private Long id;
     private UserDomainModel user;
     private String value;
-    private String type;
+    private UserContactType userContactType;
 
     @Override
     public UserContactDomainModel.Builder id(Long id) {
@@ -33,8 +33,8 @@ class UserContactDomainModelBuilder implements UserContactDomainModel.Builder {
     }
 
     @Override
-    public UserContactDomainModel.Builder type(String type) {
-        this.type = type;
+    public UserContactDomainModel.Builder userContactType(UserContactType type) {
+        this.userContactType = type;
         return this;
     }
 
@@ -53,7 +53,7 @@ class UserContactDomainModelBuilder implements UserContactDomainModel.Builder {
                 validator.requireNotNull(id, ErrorMessage.ID),
                 validator.requireNotNull(user, ErrorMessage.USER),
                 validator.requireNotEmpty(value, ErrorMessage.VALUE),
-                validator.requireNotEmpty(type, ErrorMessage.TYPE)
+                userContactType
         );
     }
 
@@ -61,6 +61,5 @@ class UserContactDomainModelBuilder implements UserContactDomainModel.Builder {
         static final String ID = "UserContactInfo.id cannot be empty";
         static final String USER = "UserContactInfo.user cannot be empty";
         static final String VALUE = "UserContactInfo.value field cannot be empty";
-        static final String TYPE = "UserContactInfo.type field cannot be empty";
     }
 }

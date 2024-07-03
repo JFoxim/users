@@ -1,17 +1,19 @@
 package ru.rinat.users.news;
 
-import ru.rinat.users.userinfo.UserDto;
-
 import java.util.List;
 import java.util.UUID;
 
 public interface NewsOperations {
 
-    NewsDto create(NewsDto userDto);
+    NewsDto create(NewsDto newsDto);
 
-    NewsDto update(NewsDto userDto);
+    NewsDto update(NewsDto newsDto);
 
     void deleteById(UUID id);
 
-    List<NewsDto> findByCreatorUser(UserDto creatorUser);
+    NewsDto findById(UUID id);
+
+    List<NewsDto> findBySubject(String subject);
+
+    List<NewsDto> findByCreatorUserId(Long userId);
 }

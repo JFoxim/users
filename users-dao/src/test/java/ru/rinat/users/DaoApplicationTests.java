@@ -89,7 +89,7 @@ public class DaoApplicationTests {
 
         assertEquals(userContact.getValue(), userContractSaved.getValue());
         assertEquals(userContact.getId(), userContractSaved.getId());
-        assertEquals(userContact.getType(), userContractSaved.getType());
+        assertEquals(userContact.getUserContactType(), userContractSaved.getUserContactType());
         assertEquals(userContact.getUser().getId(), userContractSaved.getUser().getId());
     }
 
@@ -121,7 +121,6 @@ public class DaoApplicationTests {
     }
 
     @Test
-    @Transactional
     public void saveNewsTest() {
         UserEntity ivanUserEntity = getIvanUserEntity();
         UserEntity ivanUserEntitySaved = userJpaRepository.save(ivanUserEntity);

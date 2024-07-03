@@ -16,4 +16,6 @@ public interface NewsJpaRepository extends JpaRepository<NewsEntity, UUID> {
     List<NewsEntity> findByUserCreatorId(@Param("userCreatorId") Long userCreatorId);
 
     List<NewsEntity> findByUserCreator(@Param("userCreator") UserEntity userCreator);
+
+    List<NewsEntity> findBySubjectContaining(@Param("subject") String subject);
 }

@@ -30,5 +30,6 @@ public class UserContactInfoEntity {
     private String value;
 
     @Column(name = "type")
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private UserContactType userContactType;
 }

@@ -1,6 +1,7 @@
 package ru.rinat.users;
 
 import ru.rinat.users.contact.UserContactInfoEntity;
+import ru.rinat.users.contact.UserContactType;
 import ru.rinat.users.news.NewsEntity;
 import ru.rinat.users.subscription.SubscriptionEntity;
 import ru.rinat.users.userinfo.UserEntity;
@@ -48,7 +49,7 @@ public final class TestData {
        return UserContactInfoEntity.builder()
                 .id(IVAN_CONTACT_ID)
                 .user(user)
-                .type("telegram")
+                .userContactType(UserContactType.TELEGRAM)
                 .value("@example")
                 .build();
     }
