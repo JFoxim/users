@@ -3,6 +3,7 @@ package ru.rinat.users.userinfo;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import ru.rinat.users.Gender;
 
@@ -10,6 +11,7 @@ import java.time.ZonedDateTime;
 
 @Getter
 @Builder
+@EqualsAndHashCode
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 final class UserDefaultDto implements UserDto {
     private final Long id;

@@ -55,12 +55,10 @@ public class ContactController implements ContactSpecification {
         log.info("Receive request create user contact: {}", contactRequest);
 
         UserDto userDto = userOperations.findById(contactRequest.getUserId());
-        UserContactDto userContactDto = userContactOperations.create(
-                contactRequestMapper.toDto(contactRequest, userDto));
+        UserContactDto userContactDto = userContactOperations.create(contactRequestMapper.toDto(contactRequest, userDto));
 
         URI locationUri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(userContactDto.getId()).toUri();
-
 
         log.info("User contact {} successfully created", contactRequest);
 

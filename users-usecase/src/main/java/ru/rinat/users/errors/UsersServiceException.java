@@ -38,7 +38,7 @@ public class UsersServiceException extends RuntimeException implements Supplier<
 
     @Override
     public UsersServiceException get() {
-        return null;
+        return this;
     }
 
     public class Builder {

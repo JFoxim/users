@@ -1,6 +1,7 @@
 package ru.rinat.users;
 
 import ru.rinat.users.contact.ContactRequest;
+import ru.rinat.users.contact.ContactResponse;
 import ru.rinat.users.contact.UserContactDto;
 import ru.rinat.users.contact.UserContactType;
 import ru.rinat.users.userinfo.UserDto;
@@ -53,6 +54,15 @@ public final class TestData {
         return userResponse;
     }
 
+    public static ContactResponse getContactResponse() {
+      ContactResponse contactResponse = new ContactResponse();
+        contactResponse.setId(1L);
+        contactResponse.setUser(getUserDto());
+        contactResponse.setUserContactType("ADDRESS");
+        contactResponse.setValue("г. Саратов, ул. Садовая 23, 55");
+        return contactResponse;
+    }
+
     public static ContactRequest getContactRequest() {
         ContactRequest contactRequest = new ContactRequest();
         contactRequest.setUserContactType("ADDRESS");
@@ -69,4 +79,5 @@ public final class TestData {
                 .value("г. Саратов, ул. Садовая, 23, 55")
                 .build();
     }
+
 }
