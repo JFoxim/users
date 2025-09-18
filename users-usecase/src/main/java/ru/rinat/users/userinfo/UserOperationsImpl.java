@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Builder
@@ -55,5 +56,10 @@ public class UserOperationsImpl implements UserOperations {
     @Override
     public List<UserDto> findAll(int page, int size, String sortDir, String sort) {
         return userDaoOperations.findAll(page, size, sortDir, sort);
+    }
+
+    @Override
+    public List<UserDto> findByCriteriaApi(int page, int size, String sortDir, String sort, Map<String, String> map) {
+        return userDaoOperations.findByCriteriaApi(page, size, sortDir, sort, map);
     }
 }

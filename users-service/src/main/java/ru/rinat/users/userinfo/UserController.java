@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +28,7 @@ import ru.rinat.users.common.CommonResponseDto;
 import javax.lang.model.type.NullType;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -169,6 +171,26 @@ public class UserController implements UserSpecification {
         return CommonResponseDto.<List<UserResponse>>builder()
                 .success(true)
                 .data(userOperations.findAll(page, size, sortDir, sort).stream()
+                        .map(userRequestMapper::toResponseDto).collect(Collectors.toList()))
+                .build();
+
+    }
+
+    @Override
+    @ResponseBody
+    @GetMapping(value = "/all/{page}/{size}/{sortDir}/{sort}/{firstName}")
+    @Tag(name = "Получить всех пользователей", description = "Позволяет получить всех пользователей")
+    public CommonResponseDto<List<UserResponse>> findByCriteriaApi(@PathVariable("page") int page,
+                                                                   @PathVariable("size") int size,
+                                                                   @PathVariable("sortDir") String sortDir,
+                                                                   @PathVariable("sort") String sort,
+                                                                   @RequestParam(required = false)
+                                                                       Map<String, String> allParams) {
+        log.info("Receive request findByCriteriaApi users by page {}, size {}, sortDir {}, sort {}", page, size, sortDir, sort);
+
+        return CommonResponseDto.<List<UserResponse>>builder()
+                .success(true)
+                .data(userOperations.findByCriteriaApi(page, size, sortDir, sort, allParams).stream()
                         .map(userRequestMapper::toResponseDto).collect(Collectors.toList()))
                 .build();
 

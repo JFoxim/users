@@ -13,19 +13,19 @@ services:
       - '6543:5432'
     volumes:
       - ./db-data:/var/lib/postgresql/data
-  app:
-    image: 'users:0.0.1'
-    build:
-      context: .
-    container_name: users
-    depends_on:
-      - pdb
-    ports:
-      - 8989:8989
-    environment:
-      - RU_RINAT_USERS_DATABASE_URL=jdbc:postgresql://postgres-db:5432/users
-      - SPRING_DATASOURCE_USERNAME=app_user
-      - SPRING_DATASOURCE_PASSWORD=Postgres123
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+#  app:
+#    image: 'users:0.0.1'
+#    build:
+#      context: .
+#    container_name: users
+#    depends_on:
+#      - pdb
+#    ports:
+#      - 8989:8989
+#    environment:
+#      - RU_RINAT_USERS_DATABASE_URL=jdbc:postgresql://postgres-db:5432/users
+#      - SPRING_DATASOURCE_USERNAME=app_user
+#      - SPRING_DATASOURCE_PASSWORD=Postgres123
+#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 networks:
   my-network:

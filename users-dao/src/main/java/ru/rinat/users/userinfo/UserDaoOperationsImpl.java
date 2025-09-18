@@ -2,7 +2,9 @@ package ru.rinat.users.userinfo;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.rinat.users.errors.UsersServiceException;
 import ru.rinat.users.rules.DateTimeRules;
@@ -10,6 +12,7 @@ import ru.rinat.users.rules.DateTimeRules;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -20,6 +23,7 @@ import static ru.rinat.users.errors.Constants.USER_NOT_FOUND_EXCEPTION;
 public class UserDaoOperationsImpl implements UserDaoOperations {
 
     private final UserJpaRepository userJpaRepository;
+    private final UserCriteriaRepository userCriteriaRepository;
     private final UserDtoMapper userDtoMapper;
 
     @Override
@@ -89,5 +93,16 @@ public class UserDaoOperationsImpl implements UserDaoOperations {
 
         return userJpaRepository.findAll(pageReq).stream()
                 .map(userDtoMapper::toDtoImpl).collect(Collectors.toList());
+    }
+
+    public List<UserDto> findByCriteriaApi(int page, int size, String sortDir, String sort, Map<String, String> map) {
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(sortDir), sort);
+
+        Specification<UserEntity> spec = Specification
+                    .where(UserSpecifications.firstNameContains(map.get("firstName")))
+                    .and(UserSpecifications.hasPhone(map.get("phone")));
+
+            return userCriteriaRepository.findAll(spec, pageable).map(userDtoMapper::toDtoImpl)
+                    .stream().collect(Collectors.toList());
     }
 }

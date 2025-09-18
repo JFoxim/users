@@ -11,7 +11,7 @@ val mapstructVersion: String by project
 val mockitoJunitJupiterVersion: String by project
 val postgresqlVersion: String by project
 val liquibaseCoreVersion: String by project
-val preliquibaseVersion: String by project
+//val preliquibaseVersion: String by project
 
 dependencies {
     implementation(project(":users-util"))
